@@ -14,11 +14,18 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+    app.UseDeveloperExceptionPage();
+}
+else
+{
+    app.UseExceptionHandler("/Error");
 }
 
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+
+app.MapGet("/Error", () => Results.Problem());
 
 app.MapControllers();
 
