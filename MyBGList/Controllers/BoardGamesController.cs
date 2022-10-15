@@ -23,19 +23,25 @@ namespace MyBGList.Controllers
                 {
                     Id = 1,
                     Name = "Axies & Allies",
-                    Year = 1981
+                    Year = 1981,
+                    MinPlayers = 2,
+                    MaxPlayers = 5
                 },
                 new BoardGame()
                 {
                     Id = 2,
                     Name = "Citadels",
-                    Year = 2000
+                    Year = 2000,
+                    MinPlayers = 2,
+                    MaxPlayers = 8
                 },
                 new BoardGame()
                 {
                     Id = 3,
                     Name = "Terraforming Mars",
-                    Year = 2016
+                    Year = 2016,
+                    MinPlayers = 1,
+                    MaxPlayers = 5
                 }
             };
     }
