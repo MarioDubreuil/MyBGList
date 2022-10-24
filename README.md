@@ -5,6 +5,8 @@ https://stackoverflow.com/questions/48758249/ef-core-migration-cant-use-secret-m
 $env:ASPNETCORE_ENVIRONMENT
 $env:ASPNETCORE_ENVIRONMENT="Development"
 
+dotnet tool update --global dotnet-ef
+
 dotnet ef migrations add Initial
 
 dotnet ef database update Initial
