@@ -23,6 +23,8 @@ public class BoardGamesController : ControllerBase
     public async Task<RestDTO<BoardGame[]>> Get(int pageIndex = 0, int pageSize = 10)
     {
         var query = _dbContext.BoardGames
+                        .OrderBy(b => b.Name)
+                        .ThenBy(b => b.Id)
                         .Skip(pageIndex * pageSize)
                         .Take(pageSize);
         return new RestDTO<BoardGame[]>()

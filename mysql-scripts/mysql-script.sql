@@ -48,3 +48,9 @@ select * from Domains;
 select * from Mechanics;
 select count(*) from BoardGames;
 select * from BoardGames;
+
+select Name, count(*), min(id), max(Id)
+from BoardGames
+group by Name
+having count(*) > 1
+order by 1;
