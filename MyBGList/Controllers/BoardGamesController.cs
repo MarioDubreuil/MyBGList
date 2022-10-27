@@ -3,34 +3,33 @@ using Microsoft.EntityFrameworkCore;
 using MyBGList.DTO;
 using MyBGList.Models;
 
-namespace MyBGList.Controllers
+namespace MyBGList.Controllers;
+
+[ApiController]
+[Route("[controller]")]
+public class BoardGamesController : ControllerBase
 {
-    [ApiController]
-    [Route("[controller]")]
-    public class BoardGamesController : ControllerBase
+    private readonly ApplicationDbContext _dbContext;
+    private readonly ILogger<BoardGamesController> _logger;
+
+    public BoardGamesController(ApplicationDbContext dbContext, ILogger<BoardGamesController> logger)
     {
-        private readonly ApplicationDbContext _dbContext;
-        private readonly ILogger<BoardGamesController> _logger;
+        _dbContext = dbContext;
+        _logger = logger;
+    }
 
-        public BoardGamesController(ApplicationDbContext dbContext, ILogger<BoardGamesController> logger)
+    [HttpGet(Name = "GetBoardGames")]
+    [ResponseCache(Location = ResponseCacheLocation.Any, Duration = 60)]
+    public async Task<RestDTO<BoardGame[]>> Get()
+    {
+        var boardGames = _dbContext.BoardGames;
+        return new RestDTO<BoardGame[]>()
         {
-            _dbContext = dbContext;
-            _logger = logger;
-        }
-
-        [HttpGet(Name = "GetBoardGames")]
-        [ResponseCache(Location = ResponseCacheLocation.Any, Duration = 60)]
-        public async Task<RestDTO<BoardGame[]>> Get()
-        {
-            var boardGames = _dbContext.BoardGames;
-            return new RestDTO<BoardGame[]>()
+            Data = await boardGames.ToArrayAsync(),
+            Links = new List<LinkDTO>
             {
-                Data = await boardGames.ToArrayAsync(),
-                Links = new List<LinkDTO>
-                {
-                    new LinkDTO(Url.Action(null, "BoardGames", null, Request.Scheme)!, "self", "GET")
-                }
-            };
-        }
+                new LinkDTO(Url.Action(null, "BoardGames", null, Request.Scheme)!, "self", "GET")
+            }
+        };
     }
 }
