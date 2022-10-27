@@ -22,7 +22,7 @@ public class BoardGamesController : ControllerBase
     [ResponseCache(Location = ResponseCacheLocation.Any, Duration = 60)]
     public async Task<RestDTO<BoardGame[]>> Get()
     {
-        var boardGames = _dbContext.BoardGames;
+        var boardGames = _dbContext.BoardGames.Take(10);
         return new RestDTO<BoardGame[]>()
         {
             Data = await boardGames.ToArrayAsync(),
