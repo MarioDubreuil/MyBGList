@@ -32,6 +32,7 @@ public class BoardGamesController : ControllerBase
                      .ThenBy("Id")
                      .Skip(pageIndex * pageSize)
                      .Take(pageSize);
+        var recordCount = (!string.IsNullOrEmpty(filterQuery)) ? await _dbContext.BoardGames.CountAsync(bg => bg.Name.Contains(filterQuery)) : await _dbContext.BoardGames.CountAsync();
         return new RestDTO<BoardGame[]>()
         {
             Data = await query.ToArrayAsync(),
@@ -40,7 +41,7 @@ public class BoardGamesController : ControllerBase
             SortColumn = sortColumn,
             SortOrder = sortOrder,
             FilterQuery = filterQuery,
-            RecordCount = await _dbContext.BoardGames.CountAsync(),
+            RecordCount = recordCount,
             Links = new List<LinkDTO>
             {
                 new LinkDTO(Url.Action(null, "BoardGames", null, Request.Scheme)!, "self", "GET")
