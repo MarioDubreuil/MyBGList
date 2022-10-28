@@ -42,7 +42,7 @@ public class BoardGame
 
     [Required]
     [Precision(4, 2)]
-    public decimal ComplexityAvarage { get; set; }
+    public decimal ComplexityAverage { get; set; }
 
     [Required]
     public int OwnedUsers { get; set; }

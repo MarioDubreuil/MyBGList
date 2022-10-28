@@ -57,7 +57,7 @@ public class SeedController : ControllerBase
                 Id = record.ID.Value,
                 Name = record.Name,
                 BGGRank = record.BggRank ?? 0,
-                ComplexityAvarage = record.ComplexityAverage ?? 0,
+                ComplexityAverage = record.ComplexityAverage ?? 0,
                 MaxPlayers = record.MaxPlayers ?? 0,
                 MinAge = record.MinAge ?? 0,
                 MinPlayers = record.MinPlayers ?? 0,
