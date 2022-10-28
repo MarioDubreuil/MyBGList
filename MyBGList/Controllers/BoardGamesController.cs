@@ -21,13 +21,17 @@ public class BoardGamesController : ControllerBase
 
     [HttpGet(Name = "GetBoardGames")]
     [ResponseCache(Location = ResponseCacheLocation.Any, Duration = 60)]
-    public async Task<RestDTO<BoardGame[]>> Get(int pageIndex = 0, int pageSize = 10, string sortColumn = "Name", string sortOrder = "ASC")
+    public async Task<RestDTO<BoardGame[]>> Get(int pageIndex = 0, int pageSize = 10, string? sortColumn = "Name", string? sortOrder = "ASC", string? filterQuery = null)
     {
-        var query = _dbContext.BoardGames
-                        .OrderBy($"{sortColumn} {sortOrder}")
-                        .ThenBy("Id")
-                        .Skip(pageIndex * pageSize)
-                        .Take(pageSize);
+        var query = _dbContext.BoardGames.AsQueryable();
+        if (!string.IsNullOrEmpty(filterQuery))
+        {
+            query = query.Where(bg => bg.Name.Contains(filterQuery));
+        }
+        query = query.OrderBy($"{sortColumn} {sortOrder}")
+                     .ThenBy("Id")
+                     .Skip(pageIndex * pageSize)
+                     .Take(pageSize);
         return new RestDTO<BoardGame[]>()
         {
             Data = await query.ToArrayAsync(),
@@ -35,6 +39,7 @@ public class BoardGamesController : ControllerBase
             PageSize = pageSize,
             SortColumn = sortColumn,
             SortOrder = sortOrder,
+            FilterQuery = filterQuery,
             RecordCount = await _dbContext.BoardGames.CountAsync(),
             Links = new List<LinkDTO>
             {

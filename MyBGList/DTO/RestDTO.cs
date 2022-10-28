@@ -7,6 +7,7 @@ public class RestDTO<T>
     public int? PageSize { get; set; }
     public string? SortColumn { get; set; }
     public string? SortOrder { get; set; }
+    public string? FilterQuery { get; set; }
     public int? RecordCount { get; set; }
     public List<LinkDTO> Links { get; set; } = new List<LinkDTO>();
 }
