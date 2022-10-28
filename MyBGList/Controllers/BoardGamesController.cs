@@ -21,10 +21,10 @@ public class BoardGamesController : ControllerBase
 
     [HttpGet(Name = "GetBoardGames")]
     [ResponseCache(Location = ResponseCacheLocation.Any, Duration = 60)]
-    public async Task<RestDTO<BoardGame[]>> Get(int pageIndex = 0, int pageSize = 10, string sortColumn = "Name")
+    public async Task<RestDTO<BoardGame[]>> Get(int pageIndex = 0, int pageSize = 10, string sortColumn = "Name", string sortOrder = "ASC")
     {
         var query = _dbContext.BoardGames
-                        .OrderBy(sortColumn)
+                        .OrderBy($"{sortColumn} {sortOrder}")
                         .ThenBy("Id")
                         .Skip(pageIndex * pageSize)
                         .Take(pageSize);
@@ -34,6 +34,7 @@ public class BoardGamesController : ControllerBase
             PageIndex = pageIndex,
             PageSize = pageSize,
             SortColumn = sortColumn,
+            SortOrder = sortOrder,
             RecordCount = await _dbContext.BoardGames.CountAsync(),
             Links = new List<LinkDTO>
             {
