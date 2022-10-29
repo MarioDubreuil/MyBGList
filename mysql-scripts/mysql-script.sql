@@ -54,3 +54,16 @@ from BoardGames
 group by Name
 having count(*) > 1
 order by 1;
+
+select *
+from BoardGames
+where Id = 181;
+
+-- 181
+-- Risk
+-- 1959
+-- 2022-10-27 17:01:13.265395
+
+select *
+from BoardGames
+where Id = 0;
