@@ -64,6 +64,10 @@ where Id = 181;
 -- 1959
 -- 2022-10-27 17:01:13.265395
 
+select count(*)
+from BoardGames;
+
 select *
 from BoardGames
-where Id = 0;
+order by CreatedDate desc;
+
