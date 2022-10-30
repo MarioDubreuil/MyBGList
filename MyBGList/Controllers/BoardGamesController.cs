@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using MyBGList.DTO;
 using MyBGList.Models;
+using System.ComponentModel.DataAnnotations;
 using System.Linq.Dynamic.Core;
 
 namespace MyBGList.Controllers;
@@ -21,7 +22,7 @@ public class BoardGamesController : ControllerBase
 
     [HttpGet(Name = "GetBoardGames")]
     [ResponseCache(Location = ResponseCacheLocation.Any, Duration = 60)]
-    public async Task<RestDTO<BoardGame[]>> Get(int pageIndex = 0, int pageSize = 10, string? sortColumn = "Name", string? sortOrder = "ASC", string? filterQuery = null)
+    public async Task<RestDTO<BoardGame[]>> Get(int pageIndex = 0, [Range(1, 100)] int pageSize = 10, string? sortColumn = "Name", string? sortOrder = "ASC", string? filterQuery = null)
     {
         var query = _dbContext.BoardGames.AsQueryable();
         if (!string.IsNullOrEmpty(filterQuery))
