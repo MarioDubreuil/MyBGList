@@ -23,7 +23,7 @@ public class BoardGamesController : ControllerBase
 
     [HttpGet(Name = "GetBoardGames")]
     [ResponseCache(Location = ResponseCacheLocation.Any, Duration = 60)]
-    public async Task<RestDTO<BoardGame[]>> Get(int pageIndex = 0, [Range(1, 100)] int pageSize = 10, string? sortColumn = "Name", [SortOrderValidator] string? sortOrder = "ASC", string? filterQuery = null)
+    public async Task<RestDTO<BoardGame[]>> Get(int pageIndex = 0, [Range(1, 100)] int pageSize = 10, [SortColumnValidator(typeof(BoardGameDTO))] string? sortColumn = "Name", [SortOrderValidator] string? sortOrder = "ASC", string? filterQuery = null)
     {
         var query = _dbContext.BoardGames.AsQueryable();
         if (!string.IsNullOrEmpty(filterQuery))
