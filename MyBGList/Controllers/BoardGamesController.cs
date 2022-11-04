@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using MyBGList.Attributes;
 using MyBGList.DTO;
 using MyBGList.Models;
 using System.ComponentModel.DataAnnotations;
@@ -22,7 +23,7 @@ public class BoardGamesController : ControllerBase
 
     [HttpGet(Name = "GetBoardGames")]
     [ResponseCache(Location = ResponseCacheLocation.Any, Duration = 60)]
-    public async Task<RestDTO<BoardGame[]>> Get(int pageIndex = 0, [Range(1, 100)] int pageSize = 10, string? sortColumn = "Name", [RegularExpression("ASC|DESC")] string? sortOrder = "ASC", string? filterQuery = null)
+    public async Task<RestDTO<BoardGame[]>> Get(int pageIndex = 0, [Range(1, 100)] int pageSize = 10, string? sortColumn = "Name", [SortOrderValidator] string? sortOrder = "ASC", string? filterQuery = null)
     {
         var query = _dbContext.BoardGames.AsQueryable();
         if (!string.IsNullOrEmpty(filterQuery))
