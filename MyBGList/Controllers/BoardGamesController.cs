@@ -23,26 +23,26 @@ public class BoardGamesController : ControllerBase
 
     [HttpGet(Name = "GetBoardGames")]
     [ResponseCache(Location = ResponseCacheLocation.Any, Duration = 60)]
-    public async Task<RestDTO<BoardGame[]>> Get(int pageIndex = 0, [Range(1, 100)] int pageSize = 10, [SortColumnValidator(typeof(BoardGameDTO))] string? sortColumn = "Name", [SortOrderValidator] string? sortOrder = "ASC", string? filterQuery = null)
+    public async Task<RestDTO<BoardGame[]>> Get([FromQuery] RequestDTO input)
     {
         var query = _dbContext.BoardGames.AsQueryable();
-        if (!string.IsNullOrEmpty(filterQuery))
+        if (!string.IsNullOrEmpty(input.FilterQuery))
         {
-            query = query.Where(bg => bg.Name.Contains(filterQuery));
+            query = query.Where(bg => bg.Name.Contains(input.FilterQuery));
         }
-        query = query.OrderBy($"{sortColumn} {sortOrder}")
+        query = query.OrderBy($"{input.SortColumn} {input.SortOrder}")
                      .ThenBy("Id")
-                     .Skip(pageIndex * pageSize)
-                     .Take(pageSize);
-        var recordCount = (!string.IsNullOrEmpty(filterQuery)) ? await _dbContext.BoardGames.CountAsync(bg => bg.Name.Contains(filterQuery)) : await _dbContext.BoardGames.CountAsync();
+                     .Skip(input.PageIndex * input.PageSize)
+                     .Take(input.PageSize);
+        var recordCount = (!string.IsNullOrEmpty(input.FilterQuery)) ? await _dbContext.BoardGames.CountAsync(bg => bg.Name.Contains(input.FilterQuery)) : await _dbContext.BoardGames.CountAsync();
         return new RestDTO<BoardGame[]>()
         {
             Data = await query.ToArrayAsync(),
-            PageIndex = pageIndex,
-            PageSize = pageSize,
-            SortColumn = sortColumn,
-            SortOrder = sortOrder,
-            FilterQuery = filterQuery,
+            PageIndex = input.PageIndex,
+            PageSize = input.PageSize,
+            SortColumn = input.SortColumn,
+            SortOrder = input.SortOrder,
+            FilterQuery = input.FilterQuery,
             RecordCount = recordCount,
             Links = new List<LinkDTO>
             {
