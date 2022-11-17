@@ -10,7 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers();
+builder.Services.AddControllers(options => options.ModelBindingMessageProvider.SetAttemptedValueIsInvalidAccessor((x, y) => $"***** The value '{x}' is not valid for {y}. *****"));
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
